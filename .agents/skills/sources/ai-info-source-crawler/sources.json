@@ -1,0 +1,106 @@
+{
+  "sources": [
+    {
+      "name": "mit_technology_review_ai",
+      "publisher": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed/",
+      "homepage": "https://www.technologyreview.com/topic/artificial-intelligence/",
+      "date_policy": "entry",
+      "access_mode": "rss",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news"
+    },
+    {
+      "name": "ai_insider",
+      "publisher": "AI Insider",
+      "url": "https://theaiinsider.tech/feed/",
+      "homepage": "https://theaiinsider.tech/",
+      "date_policy": "entry",
+      "access_mode": "rss",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news"
+    },
+    {
+      "name": "towards_ai",
+      "publisher": "Towards AI",
+      "url": "https://pub.towardsai.net/feed",
+      "homepage": "https://pub.towardsai.net/",
+      "date_policy": "entry",
+      "access_mode": "rss",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news"
+    },
+    {
+      "name": "jiqizhixin_official",
+      "publisher": "机器之心",
+      "url": "https://mcp.applications.jiqizhixin.com/rss",
+      "homepage": "https://www.jiqizhixin.com/",
+      "date_policy": "entry",
+      "token_env": "JIQIZHIXIN_RSS_TOKEN",
+      "access_mode": "rss",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news",
+      "notes": "Official RSS for free users. The token is read from the environment and the service permits one request per 60 minutes."
+    },
+    {
+      "name": "paperweekly",
+      "publisher": "PaperWeekly",
+      "url": "https://rss.jintiankansha.me/rss/GIYTANL4MQZWKZTCGQ3DIZRRMY4GMNTCGM3DGNJUHE4DEOBZHBQWEMRRMIZGGN3BHAYWEOLF",
+      "homepage": "http://www.jintiankansha.me/column/jHbUyPtsY3",
+      "date_policy": "entry",
+      "access_mode": "rss",
+      "source_role": "research_media",
+      "category_hint": "News",
+      "scope": "broad_news",
+      "notes": "The feed provides per-item dates, summaries, and full content."
+    },
+    {
+      "name": "embodied_ai_heart",
+      "publisher": "具身智能之心",
+      "url": "https://www.zhihu.com/api/v4/columns/c_1823331372888109056/articles",
+      "homepage": "https://www.zhihu.com/column/c_1823331372888109056",
+      "date_policy": "entry",
+      "access_mode": "zhihu_column_api",
+      "source_role": "specialized_community",
+      "category_hint": "News",
+      "scope": "broad_news",
+      "page_size": 20,
+      "max_pages": 2,
+      "notes": "Public Zhihu column for 具身智能之心. The v4 articles endpoint is paginated with limit and offset and is bounded by page_size and max_pages."
+    },
+    {
+      "name": "xinzhiyuan",
+      "publisher": "新智元",
+      "url": "https://aiera.com.cn/feed/",
+      "homepage": "https://aiera.com.cn/",
+      "date_policy": "entry",
+      "access_mode": "rss_plus_wordpress_api",
+      "api_url": "https://aiera.com.cn/wp-json/wp/v2/posts",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news",
+      "page_size": 20,
+      "max_pages": 1,
+      "notes": "RSS discovers entries; the public WordPress posts API supplies bounded full article content."
+    },
+    {
+      "name": "qbitai",
+      "publisher": "量子位",
+      "url": "https://www.qbitai.com/feed",
+      "homepage": "https://www.qbitai.com/",
+      "date_policy": "entry",
+      "access_mode": "rss_plus_wordpress_api",
+      "api_url": "https://www.qbitai.com/wp-json/wp/v2/posts",
+      "source_role": "ai_media",
+      "category_hint": "News",
+      "scope": "broad_news",
+      "page_size": 20,
+      "max_pages": 1,
+      "notes": "RSS discovers entries; the public WordPress posts API supplies bounded full article content."
+    }
+  ]
+}

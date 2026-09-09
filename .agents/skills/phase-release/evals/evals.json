@@ -1,0 +1,13 @@
+{
+  "skill_name": "phase-release",
+  "evals": [
+    {"id":"freeze-identity","prompt":"scheduled 新周期开始","expected_output":"副作用前一次时钟转 Asia/Shanghai，通过 lifecycle begin 冻结 CycleID/DisplayDate/前一自然日窗口；retry 复用 SQLite owner/context。"},
+    {"id":"dynamic-sources","prompt":"运行全部来源","expected_output":"动态枚举 sources/*/SKILL.md；同一 owner/window；每源有界 receipt，正文与失败材料只在 working_tmp。"},
+    {"id":"three-track","prompt":"selection_limit=20","expected_output":"三个隔离 rating context；Paper≤10、Policy≤3、News+Policy≤10，Policy 缺口只按 News reserve 顺序补。"},
+    {"id":"three-refine","prompt":"Paper 空，News/Policy 非空","expected_output":"仍有 paper valid-empty 与 news/policy 独立 refine context；三路 terminal 后唯一 assembly。"},
+    {"id":"freeze","prompt":"assembly 完成","expected_output":"publication freeze CLI 做 deterministic validation，只把最终 mapped publication/assets 写 SQLite。"},
+    {"id":"deploy-gate","prompt":"本地 build 成功，push/readback 未确认","expected_output":"保持 PHASE_release，同一 SQLite intent/commit 重试；只有 exact remote/public artifact 确认后 Released。"},
+    {"id":"notification","prompt":"Released 后通知超时","expected_output":"SQLite notification=unknown，不撤销 Released、不重发 POST、不重复 deploy。"},
+    {"id":"cleanup","prompt":"cycle 已 Released","expected_output":"lifecycle cleanup 删除 owner 的整个 working_tmp；不删 state、site checkout 或其他周期。"}
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "skill_name": "huggingface-trending-crawler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请根据 consensus.md 抓取 Hugging Face Daily Papers 前一个完整 Asia/Shanghai 自然日的 daily 和相交 weekly 热门论文，筛出符合我们具身智能、VLA/VLN、具身 infra、世界模型和相关 LLM/VLM 方法方向的记录，写到 working_tmp/huggingface。",
+      "expected_output": "执行 huggingface-trending-crawler，默认使用前一个完整 Asia/Shanghai 自然日并转换为 UTC 半开窗口，生成 manifest 和按 paper ID 去重的 record.md；记录保留 daily/weekly 排名、upvotes、原始 summary、来源 URL 和共识匹配依据。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "用固定窗口 [2026-07-31T16:00:00+00:00, 2026-08-01T16:00:00+00:00) 测试 Hugging Face trending crawler，daily 每天最多读取 20 条，weekly 最多 50 条，输出到 /tmp/hf-crawler-test。",
+      "expected_output": "读取窗口涉及的 daily 日期和 ISO weekly 榜，按 Hugging Face listed_at 过滤、按 ID 合并，输出 manifest 和相关论文记录。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "请 dry-run Hugging Face Daily Papers 前一个完整 Asia/Shanghai 自然日抓取，不写任何文件；报告抓取请求是否成功、去重前后的数量和最终符合 consensus 的论文。",
+      "expected_output": "使用 --dry-run 打印相关论文和数量，不创建 working_tmp/huggingface，不修改其他 source、SQLite final publication、正式站点或 lifecycle phase。",
+      "files": []
+    }
+  ]
+}

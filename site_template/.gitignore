@@ -1,0 +1,11 @@
+node_modules/
+.repo_private_key
+.repo_private_key.pub
+*.log
+logs/
+.npm/
+.pnpm-store/
+**/.vitepress/cache/
+**/.vitepress/dist/
+dist/
+build/

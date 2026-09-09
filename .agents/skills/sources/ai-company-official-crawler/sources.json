@@ -1,0 +1,113 @@
+{
+  "sources": [
+    {
+      "name": "openai_news",
+      "publisher": "OpenAI",
+      "type": "rss",
+      "url": "https://openai.com/news/rss.xml",
+      "homepage": "https://openai.com/news/",
+      "page_enrichment": "never",
+      "notes": "OpenAI article pages reject this crawler with HTTP 403. Keep official RSS summaries as partial records without repeating known-failing page requests."
+    },
+    {
+      "name": "huggingface_blog",
+      "publisher": "Hugging Face",
+      "type": "rss",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "homepage": "https://huggingface.co/blog"
+    },
+    {
+      "name": "google_ai_blog",
+      "publisher": "Google",
+      "type": "rss",
+      "url": "https://blog.google/technology/ai/rss/",
+      "homepage": "https://blog.google/technology/ai/"
+    },
+    {
+      "name": "google_deepmind_blog",
+      "publisher": "Google DeepMind",
+      "type": "rss",
+      "url": "https://raw.githubusercontent.com/leontloveless/ai-rss-feeds/main/feeds/deepmind-blog.xml",
+      "homepage": "https://deepmind.google/discover/blog/",
+      "date_source": "page",
+      "feed_date_granularity": "month",
+      "allowed_article_hosts": [
+        "deepmind.google",
+        "blog.google"
+      ],
+      "notes": "Community-maintained XML mirror of the official DeepMind blog. Its pubDate values are month-granularity placeholders, so every entry must use the official page publication date and remain on deepmind.google or blog.google."
+    },
+    {
+      "name": "nvidia_blog",
+      "publisher": "NVIDIA",
+      "type": "rss",
+      "url": "https://blogs.nvidia.com/feed/",
+      "homepage": "https://blogs.nvidia.com/"
+    },
+    {
+      "name": "physical_intelligence_blog",
+      "publisher": "Physical Intelligence",
+      "type": "sitemap",
+      "url": "https://www.pi.website/sitemap.xml",
+      "homepage": "https://www.pi.website/blog",
+      "include_url_prefixes": [
+        "https://physicalintelligence.company/blog/",
+        "https://www.pi.website/blog/"
+      ],
+      "notes": "Official sitemap lists blog URLs on physicalintelligence.company, which redirect to the current pi.website domain; article pages expose article:published_time."
+    },
+    {
+      "name": "generalist_blog",
+      "publisher": "Generalist AI",
+      "type": "blog_listing",
+      "url": "https://generalistai.com/blog",
+      "homepage": "https://generalistai.com/blog",
+      "article_url_prefixes": ["/blog/"],
+      "notes": "No official RSS or sitemap. The server-rendered blog listing provides article links and visible publish dates, which are authoritative because article pages lack date metadata."
+    },
+    {
+      "name": "perceptron_blog",
+      "publisher": "Perceptron",
+      "type": "blog_listing",
+      "url": "https://www.perceptron.inc/blog",
+      "homepage": "https://www.perceptron.inc/blog",
+      "article_url_prefixes": ["/blog/"],
+      "notes": "Framer site without RSS; sitemap lacks lastmod and article pages lack date metadata. The server-rendered blog listing provides article links and visible publish dates."
+    },
+    {
+      "name": "anthropic_official",
+      "publisher": "Anthropic",
+      "type": "sitemap",
+      "url": "https://www.anthropic.com/sitemap.xml",
+      "homepage": "https://www.anthropic.com/news",
+      "include_url_prefixes": [
+        "https://www.anthropic.com/news/",
+        "https://www.anthropic.com/research/",
+        "https://www.anthropic.com/engineering/"
+      ]
+    },
+    {
+      "name": "meta_ai_newsroom",
+      "publisher": "Meta",
+      "type": "sitemap",
+      "url": "https://about.fb.com/sitemap.xml",
+      "homepage": "https://ai.meta.com/blog/",
+      "include_url_prefixes": [
+        "https://about.fb.com/news/"
+      ],
+      "topic_keywords": [
+        "AI",
+        "artificial intelligence",
+        "Meta AI",
+        "Llama",
+        "model",
+        "machine learning",
+        "superintelligence",
+        "SAM",
+        "Segment Anything",
+        "generative"
+      ],
+      "notes": "ai.meta.com has no usable official feed and its robots policy restricts automation. Use Meta's official Newsroom sitemap and keep only AI-related articles based on page title, description, keywords, and body."
+    }
+  ]
+}

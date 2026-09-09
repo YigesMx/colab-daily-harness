@@ -1,0 +1,23 @@
+{
+  "skill_name": "arxiv-crawler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请根据仓库里的 consensus.md，抓取前一个完整 Asia/Shanghai 自然日公告批次中与我们组关注方向相关的 arXiv 论文，输出到 working_tmp/arxiv，并把公告状态保存到 SQLite source cursor/events。",
+      "expected_output": "调用 arxiv-announcement-state 固定脚本读取官方 RSS/Atom，跨分类按无版本 arXiv ID 去重，使用 API id_list 补全元数据，生成含 announcement_at/announce_type 和 API 时间字段的 source records 与 manifest；state 原子更新，不写入 final publication 或 final publication。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "请用固定公告窗口 [2026-07-31T16:00:00+00:00, 2026-08-01T16:00:00+00:00) 测试 arXiv source，输出和 state 都放到 /tmp。",
+      "expected_output": "使用显式 cycle/display date/since/until/output-dir/state-root，生成可检查的 RSS feed manifest、跨分类唯一 ID、announcement_at、announce_type、matched_query_groups 和 state；不使用 submittedDate，不污染生产 state。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "请验证 arXiv 公告 source 的失败恢复：模拟 API 元数据补全失败，但 RSS 成功，检查 state 是否保留 pending 且不生成成功 source record。",
+      "expected_output": "RSS 成功结果保留为 pending，state 不标记 emitted，不把不完整内容写成成功 record；下一次可按同一 ID 重试，且不修改 final publication、正式站点或 phase。",
+      "files": []
+    }
+  ]
+}

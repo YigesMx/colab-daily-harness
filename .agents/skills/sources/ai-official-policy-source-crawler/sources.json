@@ -1,0 +1,96 @@
+{
+  "sources": [
+    {
+      "name": "state_council_ai_policy",
+      "publisher": "State Council / gov.cn",
+      "homepage": "https://www.gov.cn/",
+      "role": "primary",
+      "type": "state_council_search",
+      "search_url": "https://sousuo.www.gov.cn/search-gov/data",
+      "detail_host": "www.gov.cn",
+      "keywords": ["人工智能", "智能化"],
+      "max_pages": 1,
+      "max_details": 12
+    },
+    {
+      "name": "miit_ai_policy",
+      "publisher": "Ministry of Industry and Information Technology",
+      "homepage": "https://www.miit.gov.cn/",
+      "role": "primary",
+      "type": "miit_dynamic",
+      "category_url": "https://www.miit.gov.cn/search-front-server/api/structure/list-category",
+      "search_url": "https://www.miit.gov.cn/search-front-server/api/search/info",
+      "rss_candidates": [
+        {
+          "name": "RRSdy / 部领导活动",
+          "url": "https://www.miit.gov.cn/api-gateway/jpaas-plugins-web-server/front/rss/getinfo?webId=8d828e408d90447786ddbe128d495e9e&columnIds=d3e2bede1bc045e2875fc7161c01db7d"
+        },
+        {
+          "name": "RRSdy / 工信动态",
+          "url": "https://www.miit.gov.cn/api-gateway/jpaas-plugins-web-server/front/rss/getinfo?webId=8d828e408d90447786ddbe128d495e9e&columnIds=d3e2bede1bc045e2875fc7161c01db7d,028da85b0dbd4c9cb96fd5f421cd32b8,e4d6c56063fa4edca257cc2e24ad473c,161ae25e72be496f93cd1c1a79f5cc2b,ca517c97303b40cf80bd668b35f6148f"
+        }
+      ],
+      "category_page": "https://www.miit.gov.cn/RRSdy/index.html",
+      "website_id": "110000000000000",
+      "search_id": 51,
+      "page_size": 10,
+      "keywords": ["人工智能", "智能制造"],
+      "max_pages": 1,
+      "max_details": 12
+    },
+    {
+      "name": "ai_policy_daily",
+      "publisher": "AI Policy Daily / AI Policy Institute",
+      "homepage": "https://aipolicydaily.org/",
+      "role": "secondary",
+      "type": "ai_policy_daily",
+      "feed_url": "https://aipolicydaily.org/archive/daily/feed.xml",
+      "archive_url": "https://aipolicydaily.org/archive/daily/{date}/",
+      "markdown_url": "https://aipolicydaily.org/archive/daily/{date}/index.md",
+      "text_url": "https://aipolicydaily.org/archive/daily/{date}/index.txt",
+      "max_feed_items": 40,
+      "max_details": 5
+    },
+    {
+      "name": "us_federal_register_ai",
+      "publisher": "U.S. Office of the Federal Register",
+      "homepage": "https://www.federalregister.gov/",
+      "role": "primary",
+      "type": "federal_register_api",
+      "api_url": "https://www.federalregister.gov/api/v1/documents.json",
+      "term": "artificial intelligence",
+      "page_size": 40,
+      "max_records": 12
+    },
+    {
+      "name": "eu_digital_strategy_ai",
+      "publisher": "European Commission / Digital Strategy",
+      "homepage": "https://digital-strategy.ec.europa.eu/",
+      "role": "primary",
+      "type": "ec_digital_strategy_rss",
+      "feed_url": "https://digital-strategy.ec.europa.eu/en/rss.xml",
+      "max_feed_items": 20
+    },
+    {
+      "name": "uk_gov_dsit_ai_policy",
+      "publisher": "UK Department for Science, Innovation and Technology",
+      "homepage": "https://www.gov.uk/",
+      "role": "primary",
+      "type": "govuk_policy_atom",
+      "feed_url": "https://www.gov.uk/search/policy-papers-and-consultations.atom?keywords=%22artificial+intelligence%22&organisations%5B%5D=department-for-science-innovation-and-technology",
+      "max_feed_items": 20
+    },
+    {
+      "name": "china_national_standard_ai",
+      "publisher": "Standards Administration of China / National Standards Platform",
+      "homepage": "https://std.samr.gov.cn/",
+      "role": "primary",
+      "type": "samr_national_standard_api",
+      "api_url": "https://std.samr.gov.cn/noc/search/nocGBPage",
+      "listing_url": "https://std.samr.gov.cn/noc/nocGB",
+      "search_text": "人工智能",
+      "page_size": 20,
+      "max_records": 12
+    }
+  ]
+}

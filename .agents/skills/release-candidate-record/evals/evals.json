@@ -1,0 +1,9 @@
+{
+  "skill_name": "release-candidate-record",
+  "evals": [
+    {"id":"canonical-assembly","prompt":"冻结 schema v3 assembly","expected_output":"调用 colab_daily.publication freeze，回读 rating/refine SQLite ownership 与唯一规范 assembly。"},
+    {"id":"final-boundary","prompt":"assembly 含临时材料","expected_output":"只映射 final publication 与 validated assets；inventory、rating/refine manifests、base64/快照不进入 SQLite。"},
+    {"id":"validation","prompt":"图片或证据不完整","expected_output":"freeze 失败并保留 working_tmp；不得伪造 validation checks。"},
+    {"id":"retry","prompt":"重复相同 freeze 后改变图片 bytes","expected_output":"相同输入 no-op；改变已冻结 publication/asset/validation fail closed。"}
+  ]
+}

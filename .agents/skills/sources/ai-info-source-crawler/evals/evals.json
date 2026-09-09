@@ -1,0 +1,41 @@
+{
+  "skill_name": "ai-info-source-crawler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "抓取配置中的 AI 资讯 RSS 前一个完整 Asia/Shanghai 自然日内容，按 consensus.md 过滤后写入 working_tmp/ai_info_source。",
+      "expected_output": "默认使用前一个完整 Asia/Shanghai 自然日并转换为 UTC 半开窗口，按 access_mode 运行八个配置来源：RSS、有限 Zhihu API 分页和有限 WordPress 批量补全；按精确条目时间过滤，配置的 News 来源使用 broad_news 召回并生成稳定目录和 record.md；机器之心 token 只从进程环境或根目录 .env 读取。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "用固定窗口 [2026-07-31T16:00:00Z, 2026-08-01T16:00:00Z) 验证 AI info source crawler，报告每个来源的读取、窗口内、相关和最终记录数。",
+      "expected_output": "八个来源都有明确状态且 category_hint 均为 News，并使用来源适用的条目时间；PaperWeekly 提供摘要和全文；新智元与量子位通过有界 WordPress API 补充全文；manifest 分别报告 feed/API/page/article 请求且不泄露机器之心 token。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "dry-run 前一个完整 Asia/Shanghai 自然日 AI 资讯来源抓取，确认共识筛选证据可解释且不创建文件。",
+      "expected_output": "打印保留记录及逐来源计数，不写输出目录；默认 consensus scope 下直接主题单关键词可保留，宽泛 LLM/VLM 方法仅正文命中时需要至少两个关键词；broad_news scope 不因缺少具身关键词丢弃新闻；API 页数和文章补全数保持在命令行上限内。",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "机器之心还在 60 分钟限流窗口，安全跳过它并抓取其他 AI 资讯来源。",
+      "expected_output": "使用 --skip-source jiqizhixin_official；不为机器之心创建 HTTP session 或发出请求，manifest 将它标记为 skipped 且请求数为 0，其他七个来源正常执行。",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "抓取具身智能相关中文资讯，并验证新智元、量子位和具身智能社区来源的内容状态与请求边界。",
+      "expected_output": "新智元和量子位先读取 RSS，再通过 include 批量 WordPress API 补全文本；API 401 保留 RSS 记录但标记 partial；Zhihu 来源使用具身智能之心的公开 v4 column articles endpoint `c_1823331372888109056`，按 limit/offset 有界分页，不调用无关来源。",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "机器之心 token 缺失或官方 RSS 返回 HTTP 401 时运行全源抓取。",
+      "expected_output": "机器之心只发零次或一次请求，状态为 partial、错误脱敏且不写记录；其他来源继续执行，整体结果为 partial 而不是因单源受限而中止。",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skill_name": "publish-candidates-to-vitepress",
+  "evals": [
+    {"id":"sqlite-input","prompt":"正式发布 cycle","expected_output":"只从 SQLite export 渲染，不从 working_tmp 或历史服务重建。"},
+    {"id":"managed-files","prompt":"checkout 有 unowned staged path/symlink/date collision","expected_output":"写入/commit 前 fail closed，保留历史内容。"},
+    {"id":"local-build","prompt":"生成正式日期内容","expected_output":"安全 Markdown/YAML、manifest、图片闭包并完成 build/loopback HTTP 验证。"},
+    {"id":"unknown-push","prompt":"push 结果未知","expected_output":"先回读 remote SHA，复用同一本地 commit，绝不 force 或创建第二 commit。"},
+    {"id":"release-gate","prompt":"remote SHA 相同但公开 artifact 不完整","expected_output":"保持 PHASE_release；全部 commit-bound public bytes 精确验证后才 Released。"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "skill_name": "refine-candidates",
+  "evals": [
+    {
+      "id": "three-contexts",
+      "prompt": "rating 完成",
+      "expected_output": "恰好 paper/news/policy 三个隔离 context；空输入也有 terminal manifest。"
+    },
+    {
+      "id": "paper-evidence",
+      "prompt": "Paper PDF失败",
+      "expected_output": "继续 TeX/HTML/作者材料/项目页/仓库，读取可用全文；不足处标注，不因摘要短丢弃。"
+    },
+    {
+      "id": "news-summary",
+      "prompt": "官方 summary-only",
+      "expected_output": "确认主体/时间/事件/URL即保守成稿，401/403不是drop。"
+    },
+    {
+      "id": "policy-text",
+      "prompt": "正式 PDF不可取",
+      "expected_output": "穷尽官方入口后保守成稿并标注未知约束力/条款/程序。"
+    },
+    {
+      "id": "image-audit",
+      "prompt": "Paper无图",
+      "expected_output": "Tex/PDF/HTML/项目页/仓库路径均terminal且nullReason非空才可null；禁止生成图。"
+    },
+    {
+      "id": "assembly",
+      "prompt": "三路完成",
+      "expected_output": "taxonomy/publication set schema v3，rank压缩，track score/scale原样。"
+    },
+    {
+      "id": "dropped",
+      "prompt": "对象完全无法确认",
+      "expected_output": "多路径后明确drop，成功/drop穷尽互斥，不跨轨补位。"
+    }
+  ]
+}

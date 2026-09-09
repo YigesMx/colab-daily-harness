@@ -1,0 +1,45 @@
+{
+  "skill_name": "rating-filter-organize",
+  "evals": [
+    {
+      "id": "inventory-partial",
+      "prompt": "一个来源 partial",
+      "expected_output": "有效 partial records 全部进入 inventory/canonicalization，状态保持 partial。"
+    },
+    {
+      "id": "category-route",
+      "prompt": "News、Policy 对象",
+      "expected_output": "共享阶段唯一分类后分别路由 news/policy，三路穷尽互斥。"
+    },
+    {
+      "id": "v3-quota",
+      "prompt": "Paper 11 或 Policy 4 或 News 11",
+      "expected_output": "validator 拒绝；合法为总数≤20、Paper≤10、Policy≤3、News≤10-Policy。"
+    },
+    {
+      "id": "news-reserve",
+      "prompt": "Policy 只有 2",
+      "expected_output": "News track 仍独立排序最多 10，coordinator 只按数量取 News 前 8，不比较分数。"
+    },
+    {
+      "id": "weekend-empty",
+      "prompt": "arXiv 无公告且状态成功",
+      "expected_output": "Paper valid empty 可与 News、Policy继续；状态失败/pending 不一致时不行。"
+    },
+    {
+      "id": "track-isolation",
+      "prompt": "Paper prompt 请求 Policy 分数",
+      "expected_output": "拒绝；每 track 只读自己的 contracts/evidence/input。"
+    },
+    {
+      "id": "schema-v3",
+      "prompt": "grouped artifact",
+      "expected_output": "schema_version=3/quota_contract=three-track-v3，固定三组 shape，无跨轨字段。"
+    },
+    {
+      "id": "legacy-v2",
+      "prompt": "历史 15 条 artifact",
+      "expected_output": "仅显式 legacy/two-track-v2 校验路径可读，不用于新生产。"
+    }
+  ]
+}

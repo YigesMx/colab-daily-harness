@@ -1,0 +1,20 @@
+{
+  "skill_name": "arxiv-announcement-state",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "同步本期 arXiv 官方公告 feed。",
+      "expected_output": "固定脚本读取 consensus 分类 RSS/Atom，跨分类按无版本 ID 合并，API id_list 补全元数据，输出 working_tmp/arxiv records，并原子更新 SQLite source cursor/events。"
+    },
+    {
+      "id": 2,
+      "prompt": "RSS 成功但 API 补全失败。",
+      "expected_output": "保留 pending 事件，不标记 emitted，不生成不完整成功 record；下次可恢复。"
+    },
+    {
+      "id": 3,
+      "prompt": "重复运行同一公告窗口。",
+      "expected_output": "复用 state，已 emitted 的 ID 不重复释放，跨分类同一 ID 只有一个 record。"
+    }
+  ]
+}

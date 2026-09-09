@@ -1,0 +1,29 @@
+{
+  "skill_name": "ai-company-official-crawler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请抓取 sources.json 中所有 AI 公司官方来源前一个完整 Asia/Shanghai 自然日的新闻、发布和博客文章，先不要按具身方向过滤，写入 working_tmp/ai_company_official。",
+      "expected_output": "执行 ai-company-official-crawler，默认使用前一个完整 Asia/Shanghai 自然日并转换为 UTC 半开窗口，所有来源有明确状态，窗口内官方内容生成稳定目录和 record.md，并保留原始摘要、正文、发布日期和来源链接。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "用固定窗口 [2026-07-31T16:00:00+00:00, 2026-08-01T16:00:00+00:00) 测试 AI company official crawler，输出到 /tmp/company-feed-test，确认 RSS、Anthropic sitemap 和 Meta Newsroom sitemap 都能独立报告结果。",
+      "expected_output": "manifest 区分每个 RSS/sitemap 来源，按真实发布日期过滤；Google DeepMind 镜像的月初占位 pubDate 必须由官方文章页日期替换，旧文章只更新不会误入，Meta 只保留 AI 主题文章。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "请 dry-run AI 公司官方 feed 前一个完整 Asia/Shanghai 自然日抓取，不创建文件，并报告每个来源读取数、窗口内数量、跳过数和最终记录数。",
+      "expected_output": "使用 --dry-run 输出公司、时间和标题，不写 working_tmp；来源失败或空结果可观察。",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "请验证 Generalist AI 与 Perceptron 这类没有 RSS/sitemap 日期的官方博客列表页来源，以及 Physical Intelligence 的官方 sitemap 重定向域名，确保记录日期、URL 身份和正文来自官方页面且不受错误 canonical 影响。",
+      "expected_output": "blog_listing 类型从官方列表页提取同域文章链接和可见发布日期，仅窗口内条目打开文章页补正文；日期与稳定 URL 身份以列表页为准，文章页 canonical 指向首页时不得覆盖身份；sitemap 类型允许 physicalintelligence.company 到 pi.website 的官方重定向。",
+      "files": []
+    }
+  ]
+}

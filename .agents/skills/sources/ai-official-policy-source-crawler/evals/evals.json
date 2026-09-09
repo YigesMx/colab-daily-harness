@@ -1,0 +1,41 @@
+{
+  "skill_name": "ai-official-policy-source-crawler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用固定 [since,until) 窗口抓取全部七类公开 AI 政策来源。",
+      "expected_output": "只使用 sources.json 中的国务院搜索、工信部动态 API/有限 RSS、AI Policy Daily feed 与日期索引、Federal Register API、EU Digital Strategy RSS、GOV.UK DSIT Atom 和 SAMR 国家标准 API；严格按窗口过滤，记录 Policy 分类、primary/secondary 角色、正文深度、AI/政策双相关性和每源状态。",
+      "files": ["sources.json", "scripts/crawl_ai_official_policy.py"]
+    },
+    {
+      "id": 2,
+      "prompt": "模拟 MIIT RRSdy RSS 已经陈旧或 404 但动态 API 成功的运行。",
+      "expected_output": "MIIT 报告 success_stale 或 partial 而不是成功空结果；动态结果仍可形成记录，RSS 不发起额外无界请求。",
+      "files": ["scripts/crawl_ai_official_policy.py", "tests/test_crawl_ai_official_policy.py"]
+    },
+    {
+      "id": 3,
+      "prompt": "模拟 AI Policy Daily feed 已列出日期但当天 index.md/index.txt 尚未发布。",
+      "expected_output": "状态为 not_yet_published，保留 feed 标题和日期线索，不伪造正文或标记 success_empty。",
+      "files": ["scripts/crawl_ai_official_policy.py", "tests/test_crawl_ai_official_policy.py"]
+    },
+    {
+      "id": 4,
+      "prompt": "验证所有请求都被 mock，且不会访问 tokenized machine-heart RSS。",
+      "expected_output": "测试完全离线；请求 URL 只来自 sources.json，配置和错误不包含 token、验证码绕过或机器之心地址。",
+      "files": ["sources.json", "tests/test_crawl_ai_official_policy.py"]
+    },
+    {
+      "id": 5,
+      "prompt": "用同一份 AI Policy Daily issue bytes 完整抓取两次，其中包含同名故事和前 80 个 slug 字符相同的故事。",
+      "expected_output": "来源 ID 和 #story-NNNN fragment 由稳定 issue URL 与解析器 story position 决定；两次抓取 ID 完全相同，所有故事的 fragment、source_id 和输出目录互异，record_count 与 window_item_count 相等且无静默覆盖。",
+      "files": ["scripts/crawl_ai_official_policy.py", "tests/test_crawl_ai_official_policy.py"]
+    },
+    {
+      "id": 6,
+      "prompt": "模拟 Federal Register、EU Digital Strategy、GOV.UK/DSIT 和 SAMR 在冻结窗口内分别返回强 AI 政策、无关数字政策条目和过期 feed。",
+      "expected_output": "强 AI 官方行动按各自 date_basis 保存为 summary_only/substantial Policy record；无关条目因缺少 AI 或政策相关性被过滤；过期 feed/API 空结果分别报告 success_stale/success_empty，所有请求有界且状态可审计。",
+      "files": ["scripts/crawl_ai_official_policy.py", "tests/test_crawl_ai_official_policy.py", "SKILL.md"]
+    }
+  ]
+}

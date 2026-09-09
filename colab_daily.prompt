@@ -1,0 +1,17 @@
+按 scheduled 正式生产模式，完整、无人值守地执行今日 Colab Daily `PHASE_release`。
+
+先读取项目内 `AGENTS.md`、`colab_daily/RUNTIME.md`、storage README、`phase-release` 及其动态发现的全部 source skills、`rating-filter-organize`、`refine-candidates`、SQLite freeze、正式 VitePress publish 和可选 notification skill。所有路径从当前项目根推导；不得使用旧项目、Grist、候选预览、人工阶段或已归档 helper。
+
+在任何业务副作用前只读取一次真实时间并转换为 Asia/Shanghai，通过 `python -m colab_daily.lifecycle begin --trigger scheduled` 冻结 CycleID、DisplayDate、前一完整上海自然日窗口和唯一 workspace owner。retry 必须复用 SQLite 身份与 `working_tmp` 现场，不重新按当前时间生成周期，不按年龄/PID 抢占 owner。
+
+动态枚举 `.agents/skills/sources/*/SKILL.md` 并用同一 owner/window 执行全部来源。arXiv 公告状态使用 SQLite source cursor/events。source/PDF/图片/inventory/rating/refine/assembly 文件只留在 `working_tmp`；SQLite 只能保存有界控制/来源/delivery facts 与最终 publication/assets，禁止临时正文、快照、base64、完整中间 manifests。
+
+保持真实语义工作：共享阶段仅 inventory/canonicalize/Category/prior/routing；paper/news/policy 三个评分 context 完全隔离，score domain 不比较。Paper target/max 10；Policy target/max 3；News primary 5并保留自身 reserve，Policy 缺口只按 News 自身顺序补到 News+Policy≤10；总计≤20。不得跨轨补位或用规则替代评分。
+
+对冻结 selection 运行恰好三个隔离 refine context，包括合法空组。Paper 主动获取并阅读尽可能完整的 TeX/PDF/HTML/作者材料/项目页/仓库，完整执行图片链；News/Policy 优先官方材料，受限时保守成稿并明确未知。不得仅因摘要短、401/403 或单一入口失败 drop。每个 context 用 `publication complete-refine` 验证 SQLite 身份，三路 terminal 后生成唯一 schema v3 taxonomy/assembly。
+
+用 `python -m colab_daily.publication freeze` 进行 deterministic validation 并只把最终 mapped publication 与 validated assets 持久化 SQLite。随后用唯一 `deploy --cycle` 从 SQLite 渲染正式 VitePress，完成安全文件校验、本地 build/HTTP、受限 commit、非强制 push、exact remote SHA 与全部 public artifacts 回读。任何 unknown 复用同一 SQLite intent 和同一 commit；未全部确认保持 PHASE_release，确认后才 Released。
+
+若配置了通知，Released 后调用 `publication notify`。通知 unknown 不自动重发、不撤销 release、不重复 deploy。最后无论通知是否成功，只要 Released，调用 lifecycle cleanup 删除当前 owner 的整个 `working_tmp`；不删除 state、site checkout 或其他周期。
+
+遇到可恢复问题先诊断并在同一 owner/cycle/context 内恢复；不得降低验证、伪造 receipt 或创建第二 publication。完成后只报告周期/窗口、各 source 状态和数量、inventory/canonical/prior/routing 数量、三轨 routed/qualified/selected/refined、run/context/generation/assembly 身份、freeze/deploy/Released/notification/cleanup 状态。不得输出候选正文、secret、private ID/URL 或认证信息。

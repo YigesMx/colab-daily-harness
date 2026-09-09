@@ -1,0 +1,9 @@
+{
+  "skill_name": "scheduled-feishu-message",
+  "evals": [
+    {"id":"post-release-only","prompt":"PHASE_release 请求通知","expected_output":"SQLite 拒绝创建 notification intent，POST 不发生。"},
+    {"id":"confirmed","prompt":"Released 且业务 code=0","expected_output":"POST 前有 SQLite intent；明确接受后 notification confirmed，Released 不变。"},
+    {"id":"unknown","prompt":"POST timeout","expected_output":"记录 unknown；后续普通调用不再次 POST，不重新 deploy。"},
+    {"id":"cleanup-independent","prompt":"通知 unknown 后 cleanup","expected_output":"Released workspace 可清理；delivery intent/evidence 保留 SQLite。"}
+  ]
+}
