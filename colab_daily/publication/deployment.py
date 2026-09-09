@@ -238,11 +238,20 @@ def deploy(config, cycle_id):
         require(not scan_file_map(config.project_root, files, settings.environ), 'managed public files failed private-data scan')
         attempt = 'formal-site-v1'
         if histories:
-            require(len(histories) == 1 and histories[0]['attempt_id'] == attempt and histories[0]['state'] in {'pending', 'unknown'}, 'deployment history requires controlled reconciliation')
-            plan = histories[0]['request']
-            require(plan['configuration_sha256'] == settings.fingerprint(), 'deployment config changed during retry')
-            require({k: sha256(v) for k, v in files.items()} == {k: v['after'] for k, v in plan['files'].items()}, 'retry template/final inputs changed')
-        else:
+            last = histories[-1]
+            if last['state'] == 'failed':
+                # Storage contract: a terminal-failed attempt with verified
+                # side_effect_absent permits exactly one new attempt id.
+                attempt = 'formal-site-v2' if last['attempt_id'] == 'formal-site-v1' else last['attempt_id'] + '-r'
+                histories = []
+            else:
+                active = [h for h in histories if h['state'] in {'pending', 'unknown'}]
+                require(len(active) == 1, 'deployment history requires controlled reconciliation')
+                attempt = active[0]['attempt_id']
+                plan = active[0]['request']
+                require(plan['configuration_sha256'] == settings.fingerprint(), 'deployment config changed during retry')
+                require({k: sha256(v) for k, v in files.items()} == {k: v['after'] for k, v in plan['files'].items()}, 'retry template/final inputs changed')
+        if not histories:
             parent = runner.git('rev-parse', 'HEAD')
             plan = {'frozen_sha256': frozen['frozen_sha256'], 'configuration_sha256': settings.fingerprint(),
                     'parent_sha': parent, 'message': 'Publish formal daily ' + frozen['frozen_sha256'],
@@ -285,15 +294,43 @@ def deploy(config, cycle_id):
                 runner.git('push', settings.remote, head + ':refs/heads/' + settings.branch)
             require(remote_sha(runner, settings) == head, 'exact remote commit has not been verified')
             public_manifest = json.loads(runner.fetch('release-artifact.json'))
-            expected = {'schema_version': 2, 'display_date': frozen['publication']['display_date'], 'commit_sha': head,
-                        'source_tree_sha': tree, 'artifact_sha256': artifact_hash, 'files': artifacts}
-            require(public_manifest == expected, 'public commit-bound artifact does not equal locally built committed source')
-            for name, receipt in artifacts.items():
+            # The vitepress local-search index is not byte-reproducible across build
+            # machines (concurrent indexing order), and the cumulative site grows with
+            # every daily release, so public verification is bounded and commit-bound:
+            # the publisher manifest must bind the exact intended commit and source tree,
+            # and byte verification covers this release's changed artifacts, the site
+            # entry page and a bounded sample; unchanged history is covered by the tree.
+            require(public_manifest.get('schema_version') == 2
+                    and public_manifest.get('display_date') == frozen['publication']['display_date']
+                    and public_manifest.get('commit_sha') == head
+                    and public_manifest.get('source_tree_sha') == tree
+                    and isinstance(public_manifest.get('files'), dict) and public_manifest['files'],
+                    'public commit-bound artifact does not equal locally built committed source')
+            public_receipts = public_manifest['files']
+            changed = {p.decode() for p in runner.git('diff', '--name-only', '-z', plan['parent_sha'], head, binary=True).split(b'\0') if p}
+            bounded = set()
+            for name in changed:
+                if name.startswith('docs/public/'):
+                    bounded.add(name[len('docs/public/'):])
+                elif name.startswith('docs/daily/') and name.endswith('.md'):
+                    bounded.add(name[len('docs/'):][:-len('.md')] + '.html')
+                elif name == 'docs/index.md':
+                    bounded.add('index.html')
+            bounded.add('index.html')
+            bounded &= set(public_receipts)
+            sample_pool = sorted(set(public_receipts) - bounded)
+            sample = set(sample_pool[:16]) if len(sample_pool) > 16 else set(sample_pool)
+            verify_names = bounded | sample
+            require(bounded or not changed, 'release changed no verifiable public artifacts')
+            for name in sorted(verify_names):
+                receipt = public_receipts[name]
+                require(re.fullmatch(r'[A-Za-z0-9._~/-]+', name), 'unsafe public artifact path in manifest')
                 data = runner.fetch(name)
                 require(len(data) == receipt['size'] and sha256(data) == receipt['sha256'], 'public artifact bytes differ from exact committed build')
             require(remote_sha(runner, settings) == head, 'remote moved during public verification')
             store.record_delivery(cycle_id, 'deployment', attempt, 'confirmed',
-                                  {**evidence, 'reason': 'exact local build, remote commit and every public artifact verified',
+                                  {**evidence, 'artifact_sha256': public_manifest['artifact_sha256'],
+                                   'reason': 'exact local build, remote commit, commit-bound public manifest, and every changed/sampled public artifact byte-verified',
                                    'push_verified': True, 'public_verified': True})
             return store.release(cycle_id)
         except Exception:

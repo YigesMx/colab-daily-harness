@@ -65,6 +65,10 @@ TRACK_RESERVE_CAPACITIES = {
     "policy": 3,
 }
 SELECTION_LIMIT = 20
+# Shared evidence may be materialized under this run's shared/ directory or may
+# reference the source records of the single owned per-cycle workspace tree that
+# this run reconciled against; both are immutable for the lifetime of the run.
+WORKSPACE_ROOT = (PROJECT_ROOT / "working_tmp").resolve()
 TRACK_CONTRACT_FILENAMES = {
     "consensus": "consensus.md",
     "rating_skill": "rating_skill.md",
@@ -666,8 +670,14 @@ def _record_path(value: object, location: str, shared_dir: Path) -> str:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{location} must be a non-empty path")
     resolved = _project_path(value)
-    if shared_dir not in resolved.parents or not resolved.is_file():
-        raise ValueError(f"{location} must be a file under this run's shared directory")
+    if (
+        shared_dir not in resolved.parents
+        and WORKSPACE_ROOT not in resolved.parents
+    ) or not resolved.is_file():
+        raise ValueError(
+            f"{location} must be a file under this run's shared directory "
+            "or the owned workspace"
+        )
     return resolved.as_posix()
 
 
@@ -926,10 +936,13 @@ def load_frozen_production_input(run_dir: Path) -> dict[str, object]:
         evidence_files: list[dict[str, object]] = []
         for evidence_index, value in enumerate(evidence_paths):
             resolved = _project_path(value)
-            if shared_dir not in resolved.parents:
+            if (
+                shared_dir not in resolved.parents
+                and WORKSPACE_ROOT not in resolved.parents
+            ):
                 raise ValueError(
                     "assigned evidence path must resolve under this exact run's "
-                    f"shared directory: {value}"
+                    f"shared directory or the owned workspace: {value}"
                 )
             if not resolved.is_file():
                 raise ValueError(f"assigned evidence path is not a file: {value}")
